@@ -36,21 +36,46 @@
   <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore-compat.js"></script>
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAzcwgZuLA7dO9g4sQhXQVTUgCo0M8m2qM",
-      authDomain: "grocerylist-91956.firebaseapp.com",
-      databaseURL: "https://grocerylist-91956.firebaseio.com",
-      projectId: "grocerylist-91956",
-      storageBucket: "grocerylist-91956.appspot.com",
-      messagingSenderId: "813812426276",
-      appId: "1:813812426276:web:93e5897af12892ff78dab1",
-      measurementId: "G-VZ83BTR72T"
-    }; 
+  const firebaseConfig = {
+    apiKey: "AIzaSyAZfXY-ly6rGdCPzYJzvuD71olzP1O6WdQ",
+    authDomain: "database2023-85f28.firebaseapp.com",
+    projectId: "database2023-85f28",
+    storageBucket: "database2023-85f28.appspot.com",
+    messagingSenderId: "37672644668",
+    appId: "1:37672644668:web:57cbeaa9159c964e75d339",
+    measurementId: "G-PZMM403QE2"
+  };
     // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
 
+    // Read Data from Database and Updatded List as the Cool Class
+    $('li').remove();
+
+    db.collection("Shopping List").get().then((querySnapshot) => {
+      var newlist = "";
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data().item}`);
+        var item = doc.data().item;
+        newlist += "<li class='cool'>" + item + "</li>";
+        // $("#todo").append("<li class='cool'>" + item + "</li>");
+
+        // Update list
+        $("#todo").append(newlist);
+      });
+    });
+
     // Save the list to database
+    $("#save").click(function(){
+      // Testing if Database Works
+      $(this).text("Saved");
+      $('li').each(function() {
+        var value = $(this).text();
+        db.collection("Shopping List").add({item: value});
+        console.log("Saving " + value);
+      });
+      db.collection("Shopping List").add({item: "Apple"});
+    });
 
 
   </script>
